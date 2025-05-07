@@ -7,6 +7,9 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\DeviceTypeController;
 use App\Http\Controllers\Admin\DeviceModelController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +49,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('device-types', DeviceTypeController::class);
     Route::resource('device-models', DeviceModelController::class);
     Route::resource('customers', CustomerController::class);
+
+    // Rutas para el CRUD de categorías
+    Route::resource('categories', CategoryController::class);
+
+    // Rutas para el CRUD de proveedores y productos
+    Route::resource('suppliers', SupplierController::class);
+    Route::resource('products', ProductController::class);
 });
 
 require __DIR__.'/auth.php';

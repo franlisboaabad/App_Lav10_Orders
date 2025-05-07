@@ -50,5 +50,27 @@
           <span class="menu-title">Clientes</span>
         </a>
       </li>
+
+      <!-- Menú de Inventario -->
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#inventory" aria-expanded="false" aria-controls="inventory">
+          <i class="icon-box menu-icon"></i>
+          <span class="menu-title">Inventario</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="inventory">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('categories.index') }}">Categorías</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('suppliers.index') }}">Proveedores</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('products.index') }}">Productos</a>
+            </li>
+          </ul>
+        </div>
+      </li>
     </ul>
   </nav>

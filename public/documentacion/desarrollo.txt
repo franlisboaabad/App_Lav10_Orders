@@ -1,0 +1,161 @@
+DOCUMENTACIÓN DEL DESARROLLO - APP_LAV10_ORDERS
+=============================================
+
+FASE 1: CONFIGURACIÓN INICIAL
+----------------------------
+- Instalación de Laravel 10
+- Configuración de la base de datos
+- Implementación de autenticación
+- Configuración de permisos y roles
+- Implementación del tema Corona
+
+FASE 2: GESTIÓN DE USUARIOS
+--------------------------
+- Implementación del CRUD de usuarios
+- Asignación de roles y permisos
+- Gestión de perfiles de usuario
+- Validación de datos y seguridad
+
+FASE 3: GESTIÓN DE DISPOSITIVOS
+------------------------------
+- Implementación del CRUD de marcas
+- Implementación del CRUD de tipos de dispositivos
+- Implementación del CRUD de modelos de dispositivos
+- Relaciones entre marcas, tipos y modelos
+- Validación y manejo de datos
+
+FASE 4: GESTIÓN DE CLIENTES
+--------------------------
+- Implementación del CRUD de clientes
+- Campos implementados:
+  * Nombre
+  * Email
+  * Teléfono
+  * Dirección
+  * Tipo de documento
+  * Número de documento
+  * Notas
+  * Estado (activo/inactivo)
+- Validación de datos
+- Manejo de errores
+- Mensajes de retroalimentación
+
+FASE 5: GESTIÓN DE INVENTARIO
+----------------------------
+1. Categorías:
+   - Implementación del CRUD
+   - Campos: nombre, slug, descripción, estado
+   - Validación y manejo de datos
+
+2. Proveedores:
+   - Implementación del CRUD
+   - Campos:
+     * Nombre
+     * Email
+     * Teléfono
+     * Dirección
+     * Tipo de documento
+     * Número de documento
+     * Notas
+     * Estado
+   - Validación de datos únicos
+   - Manejo de relaciones
+
+3. Productos:
+   - Implementación del CRUD
+   - Campos:
+     * Código (único)
+     * SKU (único)
+     * Nombre
+     * Slug
+     * Descripción
+     * Categoría (relación)
+     * Proveedor (relación)
+     * Precio de compra
+     * Precio de venta
+     * Stock actual
+     * Stock mínimo
+     * Unidad de medida
+     * Notas
+     * Estado
+   - Validaciones:
+     * Campos únicos (código, SKU)
+     * Relaciones (categoría, proveedor)
+     * Valores numéricos (precios, stock)
+     * Unidad de medida (valores predefinidos)
+   - Soft deletes implementado
+   - Generación automática de slugs
+
+ESTRUCTURA DE VISTAS
+-------------------
+1. Layouts:
+   - app.blade.php (layout principal)
+   - _sidebar.blade.php (menú lateral)
+
+2. Vistas de Productos:
+   - index.blade.php (listado)
+   - create.blade.php (creación)
+   - edit.blade.php (edición)
+
+3. Características de las vistas:
+   - Diseño responsivo
+   - Validación en tiempo real
+   - Mensajes de error
+   - Confirmaciones de acciones
+   - Paginación
+   - Filtros y búsqueda
+
+CONTROLADORES
+------------
+1. ProductController:
+   - Métodos CRUD completos
+   - Validación de datos
+   - Manejo de relaciones
+   - Mensajes de retroalimentación
+   - Soft deletes
+
+MODELOS
+-------
+1. Product:
+   - Relaciones con categorías y proveedores
+   - Soft deletes
+   - Generación automática de slugs
+   - Casting de tipos de datos
+   - Validación de datos
+
+MIGRACIONES
+----------
+1. Tablas principales:
+   - users
+   - categories
+   - suppliers
+   - products
+   - brands
+   - device_types
+   - device_models
+   - customers
+
+2. Tablas de soporte:
+   - migrations
+   - password_reset_tokens
+   - failed_jobs
+   - personal_access_tokens
+
+PRÓXIMOS PASOS
+-------------
+1. Implementación de órdenes de servicio
+2. Gestión de pagos
+3. Reportes y estadísticas
+4. Integración con API de terceros
+5. Optimización de rendimiento
+
+NOTAS IMPORTANTES
+----------------
+- Todos los formularios incluyen validación CSRF
+- Se implementó manejo de errores en todas las operaciones
+- Se utilizan mensajes de retroalimentación para el usuario
+- Se mantiene consistencia en el diseño y UX
+- Se implementaron soft deletes donde es necesario
+- Se mantiene la seguridad en todas las operaciones
+
+ÚLTIMA ACTUALIZACIÓN: [Fecha actual]
