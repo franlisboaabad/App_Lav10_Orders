@@ -57,7 +57,7 @@
                                         <option value="">Seleccione un modelo</option>
                                         @foreach($deviceModels as $model)
                                             <option value="{{ $model->id }}" {{ old('device_model_id', $serviceOrder->device_model_id) == $model->id ? 'selected' : '' }}>
-                                                {{ $model->name }}
+                                                {{ $model->brand->name }} - {{ $model->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -81,17 +81,16 @@
 
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="status" class="form-label">Estado <span class="text-danger">*</span></label>
-                                    <select class="form-select @error('status') is-invalid @enderror form-control" id="status" name="status" required>
-                                        <option value="PENDING" {{ old('status', $serviceOrder->status) == 'PENDING' ? 'selected' : '' }}>Pendiente</option>
-                                        <option value="IN_DIAGNOSIS" {{ old('status', $serviceOrder->status) == 'IN_DIAGNOSIS' ? 'selected' : '' }}>En Diagnóstico</option>
-                                        <option value="WAITING_APPROVAL" {{ old('status', $serviceOrder->status) == 'WAITING_APPROVAL' ? 'selected' : '' }}>Esperando Aprobación</option>
-                                        <option value="IN_REPAIR" {{ old('status', $serviceOrder->status) == 'IN_REPAIR' ? 'selected' : '' }}>En Reparación</option>
-                                        <option value="READY" {{ old('status', $serviceOrder->status) == 'READY' ? 'selected' : '' }}>Listo</option>
-                                        <option value="DELIVERED" {{ old('status', $serviceOrder->status) == 'DELIVERED' ? 'selected' : '' }}>Entregado</option>
-                                        <option value="CANCELLED" {{ old('status', $serviceOrder->status) == 'CANCELLED' ? 'selected' : '' }}>Cancelado</option>
+                                    <label for="status_id" class="form-label">Estado <span class="text-danger">*</span></label>
+                                    <select class="form-select @error('status_id') is-invalid @enderror form-control" id="status_id" name="status_id" required>
+                                        <option value="">Seleccione un estado</option>
+                                        @foreach($statuses as $status)
+                                            <option value="{{ $status->id }}" {{ old('status_id', $serviceOrder->status_id) == $status->id ? 'selected' : '' }}>
+                                                {{ $status->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
-                                    @error('status')
+                                    @error('status_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>

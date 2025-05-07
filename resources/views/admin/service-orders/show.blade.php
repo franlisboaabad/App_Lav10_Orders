@@ -38,8 +38,8 @@
                                     <tr>
                                         <th>Estado</th>
                                         <td>
-                                            <span class="badge bg-{{ $serviceOrder->status_color }}">
-                                                {{ $serviceOrder->status }}
+                                            <span class="badge" style="background-color: {{ $serviceOrder->status->color }}">
+                                                {{ $serviceOrder->status->name }}
                                             </span>
                                         </td>
                                     </tr>
@@ -49,11 +49,11 @@
                                     </tr>
                                     <tr>
                                         <th>Modelo de Dispositivo</th>
-                                        <td>{{ $serviceOrder->deviceModel->name }}</td>
+                                        <td>{{ $serviceOrder->deviceModel->brand->name }} - {{ $serviceOrder->deviceModel->name }}</td>
                                     </tr>
                                     <tr>
                                         <th>Número de Serie</th>
-                                        <td>{{ $serviceOrder->serial_number ?? 'No especificado' }}</td>
+                                        <td>{{ $serviceOrder->serial_number ?: 'No especificado' }}</td>
                                     </tr>
                                 </table>
                             </div>

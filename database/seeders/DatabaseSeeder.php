@@ -55,6 +55,9 @@ class DatabaseSeeder extends Seeder
             //CashRegisterSeeder::class,
             //CashMovementSeeder::class,
             //SaleSeeder::class,
+
+            // Servicio
+            ServiceOrderStatusSeeder::class,
         ]);
     }
 }

@@ -54,7 +54,7 @@
                                         <option value="">Seleccione un modelo</option>
                                         @foreach($deviceModels as $model)
                                             <option value="{{ $model->id }}" {{ old('device_model_id') == $model->id ? 'selected' : '' }}>
-                                                {{ $model->name }}
+                                                {{ $model->brand->name }} - {{ $model->name }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -78,17 +78,16 @@
 
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="status" class="form-label">Estado <span class="text-danger">*</span></label>
-                                    <select class="form-select @error('status') is-invalid @enderror form-control" id="status" name="status" required>
-                                        <option value="PENDING" {{ old('status') == 'PENDING' ? 'selected' : '' }}>Pendiente</option>
-                                        <option value="IN_DIAGNOSIS" {{ old('status') == 'IN_DIAGNOSIS' ? 'selected' : '' }}>En Diagnóstico</option>
-                                        <option value="WAITING_APPROVAL" {{ old('status') == 'WAITING_APPROVAL' ? 'selected' : '' }}>Esperando Aprobación</option>
-                                        <option value="IN_REPAIR" {{ old('status') == 'IN_REPAIR' ? 'selected' : '' }}>En Reparación</option>
-                                        <option value="READY" {{ old('status') == 'READY' ? 'selected' : '' }}>Listo</option>
-                                        <option value="DELIVERED" {{ old('status') == 'DELIVERED' ? 'selected' : '' }}>Entregado</option>
-                                        <option value="CANCELLED" {{ old('status') == 'CANCELLED' ? 'selected' : '' }}>Cancelado</option>
+                                    <label for="status_id" class="form-label">Estado <span class="text-danger">*</span></label>
+                                    <select class="form-select @error('status_id') is-invalid @enderror form-control" id="status_id" name="status_id" required>
+                                        <option value="">Seleccione un estado</option>
+                                        @foreach($statuses as $status)
+                                            <option value="{{ $status->id }}" {{ old('status_id') == $status->id ? 'selected' : '' }}>
+                                                {{ $status->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
-                                    @error('status')
+                                    @error('status_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -101,7 +100,7 @@
                                     <label for="estimated_cost" class="form-label">Costo Estimado <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
-                                        <input type="number" step="0.01" class="form-control @error('estimated_cost') is-invalid @enderror" id="estimated_cost" name="estimated_cost" value="{{ old('estimated_cost') }}" required>
+                                        <input type="number" step="0.01" class="form-control @error('estimated_cost') is-invalid @enderror" id="estimated_cost" name="estimated_cost" value="{{ old('estimated_cost', 0) }}" required min="0">
                                     </div>
                                     @error('estimated_cost')
                                         <div class="invalid-feedback">{{ $message }}</div>

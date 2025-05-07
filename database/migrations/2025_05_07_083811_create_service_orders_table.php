@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('service_orders', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->string('order_number')->unique();
+            $table->foreignId('user_id')->constrained()->onDelete('restrict');
             $table->foreignId('customer_id')->constrained()->onDelete('restrict');
             $table->foreignId('device_model_id')->constrained()->onDelete('restrict');
             $table->string('serial_number')->nullable();
@@ -22,15 +23,7 @@ return new class extends Migration
             $table->text('solution')->nullable();
             $table->decimal('estimated_cost', 10, 2)->default(0);
             $table->decimal('final_cost', 10, 2)->nullable();
-            $table->enum('status', [
-                'PENDING',           // Pendiente
-                'IN_DIAGNOSIS',      // En diagnóstico
-                'WAITING_APPROVAL',  // Esperando aprobación
-                'IN_REPAIR',         // En reparación
-                'READY',             // Listo para entrega
-                'DELIVERED',         // Entregado
-                'CANCELLED'          // Cancelado
-            ])->default('PENDING');
+            $table->foreignId('status_id')->constrained('service_order_statuses')->onDelete('restrict');
             $table->date('estimated_delivery_date')->nullable();
             $table->date('delivery_date')->nullable();
             $table->text('notes')->nullable();

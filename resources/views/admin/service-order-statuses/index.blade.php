@@ -6,9 +6,9 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Órdenes de Servicio</h5>
-                    <a href="{{ route('service-orders.create') }}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Nueva Orden
+                    <h5 class="mb-0">Estados de Órdenes de Servicio</h5>
+                    <a href="{{ route('service-order-statuses.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nuevo Estado
                     </a>
                 </div>
 
@@ -19,50 +19,56 @@
                         </div>
                     @endif
 
+                    @if (session('error'))
+                        <div class="alert alert-danger" role="alert">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>N° Orden</th>
-                                    <th>Cliente</th>
-                                    <th>Dispositivo</th>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Color</th>
+                                    <th>Descripción</th>
                                     <th>Estado</th>
-                                    <th>Costo Est.</th>
-                                    <th>Costo Final</th>
-                                    <th>Fecha Entrega</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($serviceOrders as $order)
+                                @forelse ($statuses as $status)
                                     <tr>
-                                        <td>{{ $order->order_number }}</td>
-                                        <td>{{ $order->customer->name }}</td>
-                                        <td>{{ $order->deviceModel->name }}</td>
+                                        <td>{{ $status->id }}</td>
+                                        <td>{{ $status->name }}</td>
                                         <td>
-                                            <span class="badge" style="background-color: {{ $order->status->color }}">
-                                                {{ $order->status->name }}
+                                            <span class="badge" style="background-color: {{ $status->color }}">
+                                                {{ $status->color }}
                                             </span>
                                         </td>
-                                        <td>${{ number_format($order->estimated_cost, 2) }}</td>
-                                        <td>${{ $order->final_cost ? number_format($order->final_cost, 2) : '-' }}</td>
-                                        <td>{{ $order->estimated_delivery_date ? $order->estimated_delivery_date->format('d/m/Y') : '-' }}</td>
+                                        <td>{{ Str::limit($status->description, 50) }}</td>
+                                        <td>
+                                            <span class="badge {{ $status->is_active ? 'bg-success' : 'bg-danger' }}">
+                                                {{ $status->is_active ? 'Activo' : 'Inactivo' }}
+                                            </span>
+                                        </td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{{ route('service-orders.show', $order) }}"
+                                                <a href="{{ route('service-order-statuses.show', $status) }}"
                                                    class="btn btn-sm btn-info"
                                                    title="Ver">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
-                                                <a href="{{ route('service-orders.edit', $order) }}"
+                                                <a href="{{ route('service-order-statuses.edit', $status) }}"
                                                    class="btn btn-sm btn-warning"
                                                    title="Editar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <form action="{{ route('service-orders.destroy', $order) }}"
+                                                <form action="{{ route('service-order-statuses.destroy', $status) }}"
                                                       method="POST"
                                                       class="d-inline"
-                                                      onsubmit="return confirm('¿Está seguro de eliminar esta orden?');">
+                                                      onsubmit="return confirm('¿Está seguro de eliminar este estado?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit"
@@ -76,7 +82,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="text-center">No hay órdenes de servicio registradas.</td>
+                                        <td colspan="6" class="text-center">No hay estados registrados.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -84,7 +90,7 @@
                     </div>
 
                     <div class="d-flex justify-content-center mt-4">
-                        {{ $serviceOrders->links() }}
+                        {{ $statuses->links() }}
                     </div>
                 </div>
             </div>

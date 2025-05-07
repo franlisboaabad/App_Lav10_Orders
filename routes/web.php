@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\DeviceTypeController;
@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\ServiceOrderController;
 use App\Http\Controllers\Admin\CashRegisterController;
 use App\Http\Controllers\Admin\CashMovementController;
 use App\Http\Controllers\Admin\SaleController;
+use App\Http\Controllers\Admin\ServiceOrderStatusController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,6 +64,7 @@ Route::middleware('auth')->group(function () {
 
     // Rutas para las órdenes de servicio
     Route::resource('service-orders', ServiceOrderController::class);
+    Route::resource('service-order-statuses', ServiceOrderStatusController::class);
 
     // Rutas de Caja
     Route::prefix('admin')->name('admin.')->group(function () {

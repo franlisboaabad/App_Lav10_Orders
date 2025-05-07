@@ -11,20 +11,20 @@ class ServiceOrder extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'code',
+        'order_number',
         'customer_id',
         'device_model_id',
         'serial_number',
+        'status_id',
         'problem_description',
         'diagnosis',
         'solution',
         'estimated_cost',
         'final_cost',
-        'status',
         'estimated_delivery_date',
         'delivery_date',
         'notes',
-        'is_active'
+        'user_id'
     ];
 
     protected $casts = [
@@ -32,10 +32,15 @@ class ServiceOrder extends Model
         'final_cost' => 'decimal:2',
         'estimated_delivery_date' => 'date',
         'delivery_date' => 'date',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 
     // Relaciones
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -46,16 +51,21 @@ class ServiceOrder extends Model
         return $this->belongsTo(DeviceModel::class);
     }
 
+    public function status()
+    {
+        return $this->belongsTo(ServiceOrderStatus::class, 'status_id');
+    }
+
     public function getStatusColorAttribute()
     {
-        return match($this->status) {
-            'PENDING' => 'warning',
-            'IN_DIAGNOSIS' => 'info',
-            'WAITING_APPROVAL' => 'primary',
-            'IN_REPAIR' => 'secondary',
-            'READY' => 'success',
-            'DELIVERED' => 'dark',
-            'CANCELLED' => 'danger',
+        return match($this->status->slug) {
+            'pendiente' => 'warning',
+            'en-diagnostico' => 'info',
+            'esperando-aprobacion' => 'primary',
+            'en-reparacion' => 'secondary',
+            'listo-para-entrega' => 'success',
+            'entregado' => 'dark',
+            'cancelado' => 'danger',
             default => 'secondary',
         };
     }
@@ -68,26 +78,50 @@ class ServiceOrder extends Model
 
     public function scopePending($query)
     {
-        return $query->where('status', 'PENDING');
+        return $query->whereHas('status', function($q) {
+            $q->where('slug', 'pendiente');
+        });
     }
 
-    public function scopeInProgress($query)
+    public function scopeInDiagnosis($query)
     {
-        return $query->whereIn('status', ['IN_DIAGNOSIS', 'WAITING_APPROVAL', 'IN_REPAIR']);
+        return $query->whereHas('status', function($q) {
+            $q->where('slug', 'en-diagnostico');
+        });
+    }
+
+    public function scopeWaitingApproval($query)
+    {
+        return $query->whereHas('status', function($q) {
+            $q->where('slug', 'esperando-aprobacion');
+        });
+    }
+
+    public function scopeInRepair($query)
+    {
+        return $query->whereHas('status', function($q) {
+            $q->where('slug', 'en-reparacion');
+        });
     }
 
     public function scopeReady($query)
     {
-        return $query->where('status', 'READY');
+        return $query->whereHas('status', function($q) {
+            $q->where('slug', 'listo-para-entrega');
+        });
     }
 
     public function scopeDelivered($query)
     {
-        return $query->where('status', 'DELIVERED');
+        return $query->whereHas('status', function($q) {
+            $q->where('slug', 'entregado');
+        });
     }
 
     public function scopeCancelled($query)
     {
-        return $query->where('status', 'CANCELLED');
+        return $query->whereHas('status', function($q) {
+            $q->where('slug', 'cancelado');
+        });
     }
 }
