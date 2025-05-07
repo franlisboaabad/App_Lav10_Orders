@@ -8,20 +8,21 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ route('companies.index') }}">
-          <i class="icon-building menu-icon"></i>
+          <i class="ti-briefcase menu-icon"></i>
           <span class="menu-title">Empresa</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
           <i class="icon-head menu-icon"></i>
-          <span class="menu-title">Usuarios</span>
+          <span class="menu-title">Contactos</span>
           <i class="menu-arrow"></i>
         </a>
         <div class="collapse" id="auth">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item"> <a class="nav-link" href="{{ route('users.index') }}"> Lista de Usuarios </a></li>
             <li class="nav-item"> <a class="nav-link" href="{{ route('users.create') }}"> Crear Usuario </a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ route('customers.index') }}">Lista de Clientes</a></li>
             <li class="nav-item"> <a class="nav-link" href="{{ route('profile.edit') }}"> Mi Perfil </a></li>
           </ul>
         </div>
@@ -30,7 +31,7 @@
       <!-- Menú de Dispositivos -->
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#devices" aria-expanded="false" aria-controls="devices">
-          <i class="icon-screen-smartphone menu-icon"></i>
+          <i class="ti-mobile menu-icon"></i>
           <span class="menu-title">Dispositivos</span>
           <i class="menu-arrow"></i>
         </a>
@@ -43,11 +44,11 @@
         </div>
       </li>
 
-      <!-- Menú de Clientes y Servicios -->
+      <!-- Menú de Servicios -->
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#clients" aria-expanded="false" aria-controls="clients">
-          <i class="icon-people menu-icon"></i>
-          <span class="menu-title">Clientes y Servicios</span>
+          <i class="ti-hummer menu-icon"></i>
+          <span class="menu-title">Servicios</span>
           <i class="menu-arrow"></i>
         </a>
         <div class="collapse" id="clients">
@@ -84,11 +85,10 @@
         </div>
       </li>
 
-      <li class="menu-title">Gestión</li>
 
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#cash" aria-expanded="false" aria-controls="cash">
-          <i class="mdi mdi-cash-multiple menu-icon"></i>
+          <i class="ti-wallet menu-icon"></i>
           <span class="menu-title">Caja</span>
           <i class="menu-arrow"></i>
         </a>
@@ -106,7 +106,7 @@
 
       <li class="nav-item">
         <a class="nav-link" href="{{ route('admin.sales.index') }}">
-          <i class="mdi mdi-cart menu-icon"></i>
+          <i class="ti-shopping-cart-full menu-icon"></i>
           <span class="menu-title">Ventas</span>
         </a>
       </li>
