@@ -1,25 +1,32 @@
 <x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-    </div>
+    <h4>¿Olvidaste tu contraseña?</h4>
+    <h6 class="font-weight-light">Ingresa tu email para recuperar tu contraseña.</h6>
 
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    <div class="alert alert-info">
+        {{ session('status') }}
+    </div>
 
-    <form method="POST" action="{{ route('password.email') }}">
+    <form class="pt-3" method="POST" action="{{ route('password.email') }}">
         @csrf
-
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="form-group">
+            <input type="email" class="form-control form-control-lg @error('email') is-invalid @enderror"
+                   id="email" name="email" value="{{ old('email') }}" placeholder="Email" required autofocus>
+            @error('email')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Email Password Reset Link') }}
-            </x-primary-button>
+        <div class="mt-3">
+            <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
+                ENVIAR ENLACE DE RECUPERACIÓN
+            </button>
+        </div>
+
+        <div class="text-center mt-4 font-weight-light">
+            ¿Recordaste tu contraseña? <a href="{{ route('login') }}" class="text-primary">Iniciar sesión</a>
         </div>
     </form>
 </x-guest-layout>
