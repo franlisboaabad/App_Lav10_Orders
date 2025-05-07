@@ -3,6 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\DeviceTypeController;
+use App\Http\Controllers\Admin\DeviceModelController;
+use App\Http\Controllers\Admin\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,6 +40,12 @@ Route::middleware('auth')->group(function () {
 
     // Rutas para el CRUD de usuarios
     Route::resource('users', UserController::class);
+
+    // Rutas para la Fase 2
+    Route::resource('brands', BrandController::class);
+    Route::resource('device-types', DeviceTypeController::class);
+    Route::resource('device-models', DeviceModelController::class);
+    Route::resource('customers', CustomerController::class);
 });
 
 require __DIR__.'/auth.php';
