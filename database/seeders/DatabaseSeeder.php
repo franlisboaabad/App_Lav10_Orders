@@ -20,13 +20,20 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        // User::firstOrCreate(
-        //     ['email' => 'admin@admin.com'],
-        //     [
-        //         'name' => 'Admin',
-        //         'password' => bcrypt('password'),
-        //     ]
-        // )->assignRole('admin');
+        User::firstOrCreate(
+            ['email' => 'admin@admin.com'],
+            [
+                'name' => 'Admin',
+                'password' => bcrypt('12345678'),
+            ]
+        )->assignRole('admin');
 
+        $this->call([
+            BrandSeeder::class,
+            DeviceTypeSeeder::class,
+            DeviceModelSeeder::class,
+            CustomerSeeder::class,
+            ServiceOrderSeeder::class,
+        ]);
     }
 }

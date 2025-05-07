@@ -43,12 +43,23 @@
         </div>
       </li>
 
-      <!-- Menú de Clientes -->
+      <!-- Menú de Clientes y Servicios -->
       <li class="nav-item">
-        <a class="nav-link" href="{{ route('customers.index') }}">
+        <a class="nav-link" data-toggle="collapse" href="#clients" aria-expanded="false" aria-controls="clients">
           <i class="icon-people menu-icon"></i>
-          <span class="menu-title">Clientes</span>
+          <span class="menu-title">Clientes y Servicios</span>
+          <i class="menu-arrow"></i>
         </a>
+        <div class="collapse" id="clients">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('customers.index') }}">Clientes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('service-orders.index') }}">Órdenes de Servicio</a>
+            </li>
+          </ul>
+        </div>
       </li>
 
       <!-- Menú de Inventario -->

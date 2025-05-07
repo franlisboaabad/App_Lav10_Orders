@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ServiceOrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,6 +57,9 @@ Route::middleware('auth')->group(function () {
     // Rutas para el CRUD de proveedores y productos
     Route::resource('suppliers', SupplierController::class);
     Route::resource('products', ProductController::class);
+
+    // Rutas para las órdenes de servicio
+    Route::resource('service-orders', ServiceOrderController::class);
 });
 
 require __DIR__.'/auth.php';
