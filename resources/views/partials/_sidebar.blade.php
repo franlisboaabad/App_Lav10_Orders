@@ -83,5 +83,26 @@
           </ul>
         </div>
       </li>
+
+      <li class="menu-title">Gestión</li>
+
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#cash" aria-expanded="false" aria-controls="cash">
+          <i class="mdi mdi-cash-multiple menu-icon"></i>
+          <span class="menu-title">Caja</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="cash">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('admin.cash-registers.index') }}">Registros de Caja</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ route('admin.cash-registers.report') }}">Reporte Diario</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
     </ul>
   </nav>

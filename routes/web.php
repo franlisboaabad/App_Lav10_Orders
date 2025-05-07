@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ServiceOrderController;
+use App\Http\Controllers\Admin\CashRegisterController;
+use App\Http\Controllers\Admin\CashMovementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -60,6 +62,15 @@ Route::middleware('auth')->group(function () {
 
     // Rutas para las órdenes de servicio
     Route::resource('service-orders', ServiceOrderController::class);
+
+    // Rutas de Caja
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('cash-registers/report', [CashRegisterController::class, 'report'])->name('cash-registers.report');
+        Route::post('cash-registers/{cashRegister}/close', [CashRegisterController::class, 'close'])->name('cash-registers.close');
+        Route::delete('cash-registers/{cashRegister}', [CashRegisterController::class, 'destroy'])->name('cash-registers.destroy');
+        Route::resource('cash-registers', CashRegisterController::class)->except(['destroy']);
+        Route::resource('cash-movements', CashMovementController::class);
+    });
 });
 
 require __DIR__.'/auth.php';
