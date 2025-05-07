@@ -11,25 +11,20 @@ class BrandSeeder extends Seeder
     public function run(): void
     {
         $brands = [
-            ['name' => 'Apple', 'description' => 'Fabricante de dispositivos iOS y macOS'],
-            ['name' => 'Samsung', 'description' => 'Fabricante de dispositivos Android y electrónicos'],
-            ['name' => 'Huawei', 'description' => 'Fabricante de smartphones y equipos de red'],
-            ['name' => 'Xiaomi', 'description' => 'Fabricante de smartphones y dispositivos IoT'],
-            ['name' => 'LG', 'description' => 'Fabricante de electrónicos y electrodomésticos'],
-            ['name' => 'Sony', 'description' => 'Fabricante de electrónicos y entretenimiento'],
-            ['name' => 'Motorola', 'description' => 'Fabricante de smartphones y equipos de comunicación'],
-            ['name' => 'Lenovo', 'description' => 'Fabricante de computadoras y dispositivos móviles'],
-            ['name' => 'Asus', 'description' => 'Fabricante de computadoras y componentes'],
-            ['name' => 'HP', 'description' => 'Fabricante de computadoras e impresoras'],
+            ['name' => 'Apple', 'slug' => 'apple', 'is_active' => true],
+            ['name' => 'Samsung', 'slug' => 'samsung', 'is_active' => true],
+            ['name' => 'Huawei', 'slug' => 'huawei', 'is_active' => true],
+            ['name' => 'Xiaomi', 'slug' => 'xiaomi', 'is_active' => true],
+            ['name' => 'Motorola', 'slug' => 'motorola', 'is_active' => true],
+            ['name' => 'LG', 'slug' => 'lg', 'is_active' => true],
+            ['name' => 'Sony', 'slug' => 'sony', 'is_active' => true],
+            ['name' => 'Asus', 'slug' => 'asus', 'is_active' => true],
+            ['name' => 'Lenovo', 'slug' => 'lenovo', 'is_active' => true],
+            ['name' => 'HP', 'slug' => 'hp', 'is_active' => true]
         ];
 
         foreach ($brands as $brand) {
-            Brand::create([
-                'name' => $brand['name'],
-                'slug' => Str::slug($brand['name']),
-                'description' => $brand['description'],
-                'is_active' => true
-            ]);
+            Brand::create($brand);
         }
     }
 }

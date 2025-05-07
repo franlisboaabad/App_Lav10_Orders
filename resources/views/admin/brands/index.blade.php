@@ -70,7 +70,7 @@
                                     <td>{{ $brand->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <a href="{{ route('brands.edit', $brand) }}" class="btn btn-primary btn-sm">
-                                            <i class="icon-pencil"></i>
+                                            <i class="icon-eye"></i>
                                         </a>
                                         <form action="{{ route('brands.destroy', $brand) }}" method="POST" class="d-inline">
                                             @csrf

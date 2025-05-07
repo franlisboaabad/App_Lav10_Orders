@@ -80,7 +80,7 @@
                                     </td>
                                     <td>
                                         <a href="{{ route('products.edit', $product) }}" class="btn btn-primary btn-sm">
-                                            <i class="icon-pencil"></i>
+                                            <i class="icon-eye"></i>
                                         </a>
                                         <form action="{{ route('products.destroy', $product) }}" method="POST" class="d-inline">
                                             @csrf

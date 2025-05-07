@@ -11,25 +11,20 @@ class DeviceTypeSeeder extends Seeder
     public function run(): void
     {
         $types = [
-            ['name' => 'Smartphone', 'description' => 'Teléfonos móviles inteligentes'],
-            ['name' => 'Tablet', 'description' => 'Dispositivos táctiles portátiles'],
-            ['name' => 'Laptop', 'description' => 'Computadoras portátiles'],
-            ['name' => 'Desktop', 'description' => 'Computadoras de escritorio'],
-            ['name' => 'Smart TV', 'description' => 'Televisores con conectividad'],
-            ['name' => 'Smartwatch', 'description' => 'Relojes inteligentes'],
-            ['name' => 'Impresora', 'description' => 'Dispositivos de impresión'],
-            ['name' => 'Router', 'description' => 'Dispositivos de red'],
-            ['name' => 'Cámara', 'description' => 'Cámaras digitales y de video'],
-            ['name' => 'Consola', 'description' => 'Consolas de videojuegos'],
+            ['name' => 'Smartphone','slug' => 'smartphone', 'is_active' => true],
+            ['name' => 'Tablet', 'slug' => 'tablet', 'is_active' => true],
+            ['name' => 'Laptop', 'slug' => 'laptop', 'is_active' => true],
+            ['name' => 'Desktop', 'slug' => 'desktop', 'is_active' => true],
+            ['name' => 'Smartwatch', 'slug' => 'smartwatch', 'is_active' => true],
+            ['name' => 'Smart TV', 'slug' => 'smart-tv', 'is_active' => true],
+            ['name' => 'Impresora', 'slug' => 'impresora', 'is_active' => true],
+            ['name' => 'Router', 'slug' => 'router', 'is_active' => true],
+            ['name' => 'Cámara', 'slug' => 'camara', 'is_active' => true],
+            ['name' => 'Otro', 'slug' => 'otro', 'is_active' => true]
         ];
 
         foreach ($types as $type) {
-            DeviceType::create([
-                'name' => $type['name'],
-                'slug' => Str::slug($type['name']),
-                'description' => $type['description'],
-                'is_active' => true
-            ]);
+            DeviceType::create($type);
         }
     }
 }

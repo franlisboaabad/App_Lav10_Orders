@@ -74,7 +74,7 @@
                                     <td>{{ $supplier->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <a href="{{ route('suppliers.edit', $supplier) }}" class="btn btn-primary btn-sm">
-                                            <i class="icon-pencil"></i>
+                                            <i class="icon-eye"></i>
                                         </a>
                                         <form action="{{ route('suppliers.destroy', $supplier) }}" method="POST" class="d-inline">
                                             @csrf

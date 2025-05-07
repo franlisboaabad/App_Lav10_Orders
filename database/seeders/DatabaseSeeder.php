@@ -15,7 +15,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // \App\Models\User::factory(10)->create();
-
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
@@ -30,11 +29,32 @@ class DatabaseSeeder extends Seeder
         )->assignRole('admin');
 
         $this->call([
+            // Usuarios y Roles
+            UserSeeder::class,
+            // RoleSeeder::class,
+            // PermissionSeeder::class,
+
+            // Empresa
+            CompanySeeder::class,
+
+            // Dispositivos
             BrandSeeder::class,
             DeviceTypeSeeder::class,
             DeviceModelSeeder::class,
+
+            // Clientes y Servicios
             CustomerSeeder::class,
-            ServiceOrderSeeder::class,
+            //ServiceOrderSeeder::class,
+
+            // Inventario
+            CategorySeeder::class,
+            SupplierSeeder::class,
+            ProductSeeder::class,
+
+            // Caja y Ventas
+            //CashRegisterSeeder::class,
+            //CashMovementSeeder::class,
+            //SaleSeeder::class,
         ]);
     }
 }

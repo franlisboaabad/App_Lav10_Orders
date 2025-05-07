@@ -70,7 +70,7 @@
                                     <td>{{ $deviceType->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <a href="{{ route('device-types.edit', $deviceType) }}" class="btn btn-primary btn-sm">
-                                            <i class="icon-pencil"></i>
+                                            <i class="icon-eye"></i>
                                         </a>
                                         <form action="{{ route('device-types.destroy', $deviceType) }}" method="POST" class="d-inline">
                                             @csrf

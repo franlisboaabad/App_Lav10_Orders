@@ -22,13 +22,12 @@
         }
       } else {
         //for other url
-        if (element.attr('href').indexOf(current) !== -1) {
+        var href = element.attr('href');
+        // Solo marcar como activo si la ruta coincide exactamente
+        if (href === current || href === '/' + current) {
           element.parents('.nav-item').last().addClass('active');
           if (element.parents('.sub-menu').length) {
             element.closest('.collapse').addClass('show');
-            element.addClass('active');
-          }
-          if (element.parents('.submenu-item').length) {
             element.addClass('active');
           }
         }
@@ -96,7 +95,7 @@
           navItemClicked.removeClass('show-submenu');
         }
         $(this).toggleClass('show-submenu');
-      }        
+      }
     })
 
     $(window).scroll(function() {
@@ -115,5 +114,5 @@
   $('#navbar-search-icon').click(function() {
     $("#navbar-search-input").focus();
   });
-  
+
 })(jQuery);

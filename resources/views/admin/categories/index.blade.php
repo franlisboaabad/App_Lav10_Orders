@@ -70,7 +70,7 @@
                                     <td>{{ $category->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <a href="{{ route('categories.edit', $category) }}" class="btn btn-primary btn-sm">
-                                            <i class="icon-pencil"></i>
+                                            <i class="icon-eye"></i>
                                         </a>
                                         <form action="{{ route('categories.destroy', $category) }}" method="POST" class="d-inline">
                                             @csrf

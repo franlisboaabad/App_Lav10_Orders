@@ -64,7 +64,7 @@
                                     <td>{{ $user->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <a href="{{ route('users.edit', $user) }}" class="btn btn-primary btn-sm">
-                                            <i class="icon-pencil"></i>
+                                            <i class="icon-eye"></i>
                                         </a>
                                         @if($user->id !== auth()->id())
                                             <form action="{{ route('users.destroy', $user) }}" method="POST" class="d-inline">

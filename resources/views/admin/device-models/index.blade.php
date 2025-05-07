@@ -74,7 +74,7 @@
                                     <td>{{ $deviceModel->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <a href="{{ route('device-models.edit', $deviceModel) }}" class="btn btn-primary btn-sm">
-                                            <i class="icon-pencil"></i>
+                                            <i class="icon-eye"></i>
                                         </a>
                                         <form action="{{ route('device-models.destroy', $deviceModel) }}" method="POST" class="d-inline">
                                             @csrf

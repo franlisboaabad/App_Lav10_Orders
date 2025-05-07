@@ -12,74 +12,74 @@ class DeviceModelSeeder extends Seeder
 {
     public function run(): void
     {
-        // Obtener IDs de marcas y tipos
-        $apple = Brand::where('name', 'Apple')->first();
-        $samsung = Brand::where('name', 'Samsung')->first();
-        $huawei = Brand::where('name', 'Huawei')->first();
-
-        $smartphone = DeviceType::where('name', 'Smartphone')->first();
-        $laptop = DeviceType::where('name', 'Laptop')->first();
-        $tablet = DeviceType::where('name', 'Tablet')->first();
-
         $models = [
             // Apple
             [
-                'brand_id' => $apple->id,
-                'device_type_id' => $smartphone->id,
+                'brand_id' => 1, // Apple
+                'device_type_id' => 1, // Smartphone
                 'name' => 'iPhone 14 Pro',
-                'description' => 'Smartphone de gama alta con cámara de 48MP'
+                'slug' => 'iphone-14-pro',
+                'is_active' => true
             ],
             [
-                'brand_id' => $apple->id,
-                'device_type_id' => $laptop->id,
-                'name' => 'MacBook Pro M2',
-                'description' => 'Laptop profesional con chip M2'
+                'brand_id' => 1,
+                'device_type_id' => 2, // Tablet
+                    'name' => 'iPad Pro',
+                'slug' => 'ipad-pro',
+                'is_active' => true
             ],
             [
-                'brand_id' => $apple->id,
-                'device_type_id' => $tablet->id,
-                'name' => 'iPad Pro',
-                'description' => 'Tablet profesional con pantalla Liquid Retina'
+                'brand_id' => 1,
+                'device_type_id' => 3, // Laptop
+                'name' => 'MacBook Pro',
+                'slug' => 'macbook-pro',
+                'is_active' => true
             ],
 
             // Samsung
             [
-                'brand_id' => $samsung->id,
-                'device_type_id' => $smartphone->id,
-                'name' => 'Galaxy S23 Ultra',
-                'description' => 'Smartphone insignia con cámara de 200MP'
+                'brand_id' => 2, // Samsung
+                'device_type_id' => 1,
+                'name' => 'Galaxy S23',
+                'slug' => 'galaxy-s23',
+                'is_active' => true
             ],
             [
-                'brand_id' => $samsung->id,
-                'device_type_id' => $tablet->id,
+                'brand_id' => 2,
+                'device_type_id' => 2,
                 'name' => 'Galaxy Tab S9',
-                'description' => 'Tablet Android de gama alta'
+                'slug' => 'galaxy-tab-s9',
+                'is_active' => true
             ],
 
             // Huawei
             [
-                'brand_id' => $huawei->id,
-                'device_type_id' => $smartphone->id,
+                'brand_id' => 3, // Huawei
+                'device_type_id' => 1,
                 'name' => 'P60 Pro',
-                'description' => 'Smartphone con sistema de cámara avanzado'
+                'slug' => 'p60-pro',
+                'is_active' => true
             ],
             [
-                'brand_id' => $huawei->id,
-                'device_type_id' => $laptop->id,
+                'brand_id' => 3,
+                'device_type_id' => 3,
                 'name' => 'MateBook X Pro',
-                'description' => 'Laptop ultradelgada con pantalla táctil'
+                'slug' => 'matebook-x-pro',
+                'is_active' => true
             ],
+
+            // Xiaomi
+            [
+                'brand_id' => 4, // Xiaomi
+                'device_type_id' => 1,
+                'name' => 'Redmi Note 11',
+                'slug' => 'redmi-note-11',
+                'is_active' => true
+            ]
         ];
 
         foreach ($models as $model) {
-            DeviceModel::create([
-                'brand_id' => $model['brand_id'],
-                'device_type_id' => $model['device_type_id'],
-                'name' => $model['name'],
-                'slug' => Str::slug($model['name']),
-                'description' => $model['description'],
-                'is_active' => true
-            ]);
+            DeviceModel::create($model);
         }
     }
 }

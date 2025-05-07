@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ServiceOrderController;
 use App\Http\Controllers\Admin\CashRegisterController;
 use App\Http\Controllers\Admin\CashMovementController;
+use App\Http\Controllers\Admin\SaleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,11 +66,14 @@ Route::middleware('auth')->group(function () {
 
     // Rutas de Caja
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('cash-registers/report', [CashRegisterController::class, 'report'])->name('cash-registers.report');
+        Route::resource('cash-registers', CashRegisterController::class);
         Route::post('cash-registers/{cashRegister}/close', [CashRegisterController::class, 'close'])->name('cash-registers.close');
+        Route::get('cash-registers/report', [CashRegisterController::class, 'report'])->name('cash-registers.report');
         Route::delete('cash-registers/{cashRegister}', [CashRegisterController::class, 'destroy'])->name('cash-registers.destroy');
-        Route::resource('cash-registers', CashRegisterController::class)->except(['destroy']);
         Route::resource('cash-movements', CashMovementController::class);
+
+        // Rutas de ventas
+        Route::resource('sales', SaleController::class);
     });
 });
 
