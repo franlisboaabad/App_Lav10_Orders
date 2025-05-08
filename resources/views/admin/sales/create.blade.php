@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <td>$${product.subtotal.toFixed(2)}</td>
                 <td>
                     <button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(${index})">
-                        <i class="mdi mdi-delete"></i>
+                        <i class="ti-trash"></i>
                     </button>
                 </td>
             `;

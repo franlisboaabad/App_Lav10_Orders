@@ -121,12 +121,12 @@ class CashRegisterController extends Controller
 
     public function close(Request $request, CashRegister $cashRegister)
     {
-        if ($cashRegister->status === 'closed') {
+        if ($cashRegister->status === 'CLOSED') {
             return redirect()->back()->with('error', 'Esta caja ya está cerrada.');
         }
 
         $request->validate([
-            'final_balance' => 'required|numeric|min:0',
+            'final_amount' => 'required|numeric|min:0',
             'notes' => 'nullable|string'
         ]);
 
@@ -134,19 +134,24 @@ class CashRegisterController extends Controller
             DB::beginTransaction();
 
             $cashRegister->update([
-                'status' => 'closed',
-                'closed_at' => now(),
-                'closed_by' => auth()->id(),
-                'final_balance' => $request->final_balance,
-                'closing_notes' => $request->notes
+                'status' => 'CLOSED',
+                'closing_date' => now(),
+                'final_balance' => $request->final_amount,
+                'notes' => $request->notes
             ]);
 
             DB::commit();
 
-            return redirect()->route('admin.cash-registers.index')
-                ->with('success', 'Caja cerrada exitosamente.');
+            return response()->json([
+                'success' => true,
+                'message' => 'Caja cerrada exitosamente.'
+            ]);
+
+            /*return redirect()->route('admin.cash-registers.index')
+                ->with('success', 'Caja cerrada exitosamente.');*/
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Error al cerrar caja: ' . $e->getMessage());
             return back()->with('error', 'Error al cerrar la caja: ' . $e->getMessage());
         }
     }
