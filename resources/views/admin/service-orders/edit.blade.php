@@ -2,32 +2,12 @@
 
 @section('content')
 
-
-    <div class="row mt-5">
-        <div class="col-12 grid-margin stretch-card">
-            <div class="card corona-gradient-card">
-                <div class="card-body py-0 px-0 px-sm-3">
-                    <div class="row align-items-center">
-                        <div class="col-4 col-sm-3 col-xl-2">
-                            <img src="{{ asset('assets/images/dashboard/Group126@2x.png') }}" class="gradient-corona-img img-fluid" alt="">
-                        </div>
-                        <div class="col-3 col-sm-2 col-xl-2 ps-0 text-center">
-                            <span>
-                                <h6 class="mb-1 mb-sm-0">Editar Orden de Servicio</h6>
-                                <p class="mb-0 font-weight-normal d-none d-sm-block">Editar una orden de servicio</p>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
+<div class="content-wrapper">
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <h4 class="card-title">Editar Orden de Servicio</h4>
                     <form action="{{ route('service-orders.update', $serviceOrder) }}" method="POST">
                         @csrf
                         @method('PUT')
@@ -188,5 +168,5 @@
             </div>
         </div>
     </div>
-
+</div>
 @endsection

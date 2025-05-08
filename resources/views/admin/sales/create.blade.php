@@ -1,28 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <!-- start page title -->
-    <div class="row mt-5">
-        <div class="col-12">
-            <div class="page-title-box d-flex align-items-center justify-content-between">
-                <h4 class="mb-0">Nueva Venta</h4>
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.sales.index') }}">Ventas</a></li>
-                        <li class="breadcrumb-item active">Nueva</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- end page title -->
+<div class="content-wrapper">
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <h4 class="card-title">Nueva Venta</h4>
                     <form action="{{ route('admin.sales.store') }}" method="POST" id="saleForm">
                         @csrf
                         <input type="hidden" name="cash_register_id" value="{{ $cashRegister->id }}">

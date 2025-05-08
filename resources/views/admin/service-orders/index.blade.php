@@ -1,16 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
+<div class="content-wrapper">
+    <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Órdenes de Servicio</h5>
-                    <a href="{{ route('service-orders.create') }}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Nueva Orden
-                    </a>
-                </div>
+
 
                 <div class="card-body">
                     @if (session('success'))
@@ -18,6 +13,14 @@
                             {{ session('success') }}
                         </div>
                     @endif
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0">Órdenes de Servicio</h5>
+                    <a href="{{ route('service-orders.create') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Nueva Orden
+                    </a>
+                    </div>
+
 
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -52,12 +55,12 @@
                                                 <a href="{{ route('service-orders.show', $order) }}"
                                                    class="btn btn-sm btn-info"
                                                    title="Ver">
-                                                    <i class="fas fa-eye"></i>
+                                                    <i class="icon-eye"></i>
                                                 </a>
                                                 <a href="{{ route('service-orders.edit', $order) }}"
                                                    class="btn btn-sm btn-warning"
                                                    title="Editar">
-                                                    <i class="fas fa-edit"></i>
+                                                    <i class="ti-pencil"></i>
                                                 </a>
                                                 <form action="{{ route('service-orders.destroy', $order) }}"
                                                       method="POST"
@@ -68,7 +71,7 @@
                                                     <button type="submit"
                                                             class="btn btn-sm btn-danger"
                                                             title="Eliminar">
-                                                        <i class="fas fa-trash"></i>
+                                                        <i class="icon-trash"></i>
                                                     </button>
                                                 </form>
                                             </div>

@@ -31,7 +31,7 @@ class CashRegisterController extends Controller
         // Verificar si hay una caja abierta
         $openRegister = CashRegister::open()->first();
         if ($openRegister) {
-            return redirect()->route('cash-registers.show', $openRegister)
+            return redirect()->route('admin.cash-registers.show', $openRegister)
                 ->with('warning', 'Ya existe una caja abierta. Debe cerrarla antes de abrir una nueva.');
         }
 

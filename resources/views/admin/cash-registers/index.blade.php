@@ -2,25 +2,7 @@
 
 @section('content')
 
-<div class="row mt-5">
-    <div class="col-12 grid-margin stretch-card">
-        <div class="card corona-gradient-card">
-            <div class="card-body py-0 px-0 px-sm-3">
-                <div class="row align-items-center">
-                    <div class="col-4 col-sm-3 col-xl-2">
-                        <img src="{{ asset('assets/images/dashboard/Group126@2x.png') }}" class="gradient-corona-img img-fluid" alt="">
-                    </div>
-                    <div class="col-3 col-sm-2 col-xl-2 ps-0 text-center">
-                        <span>
-                            <h6 class="mb-1 mb-sm-0">Registros de Caja</h6>
-                            <p class="mb-0 font-weight-normal d-none d-sm-block">Registrar y gestionar los registros de caja</p>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="content-wrapper">
 
     <div class="row">
         <div class="col-12">
@@ -91,15 +73,15 @@
                                             <a href="{{ route('admin.cash-registers.show', $register) }}"
                                                class="btn btn-info btn-sm"
                                                title="Ver detalles">
-                                                <i class="icon-eye"></i>
+                                                <i class="ti-eye"></i>
                                             </a>
                                             @if($register->status === 'OPEN')
                                                 <button type="button"
                                                         class="btn btn-warning btn-sm"
                                                         title="Cerrar caja"
                                                         data-bs-toggle="modal"
-                                                        data-bs-target="#closeModal{{ $register->id }}">
-                                                    <i class="mdi mdi-close-circle"></i>
+                                                        data-bs-target="#closeCashRegisterModal{{ $register->id }}">
+                                                    <i class="ti-pencil"></i>
                                                 </button>
                                             @endif
                                             @if($register->status === 'CLOSED')
@@ -117,41 +99,40 @@
 
                                 <!-- Modal para cerrar caja -->
                                 @if($register->status === 'OPEN')
-                                    <div class="modal fade" id="closeModal{{ $register->id }}" tabindex="-1" aria-labelledby="closeModalLabel{{ $register->id }}" aria-hidden="true">
+                                    <div class="modal fade" id="closeCashRegisterModal{{ $register->id }}" tabindex="-1" aria-labelledby="closeCashRegisterModalLabel{{ $register->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
-                                                <form action="{{ route('admin.cash-registers.close', $register) }}" method="POST">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="closeCashRegisterModalLabel{{ $register->id }}">Cerrar Caja</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form id="closeCashRegisterForm{{ $register->id }}" action="{{ route('admin.cash-registers.close', $register) }}" method="POST">
                                                     @csrf
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="closeModalLabel{{ $register->id }}">Cerrar Caja</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
                                                     <div class="modal-body">
-                                                        <div class="alert alert-info">
-                                                            <strong>Saldo Actual:</strong> ${{ number_format($register->current_balance, 2) }}
-                                                        </div>
                                                         <div class="mb-3">
-                                                            <label class="form-label">Saldo Final</label>
-                                                            <input type="number"
-                                                                   class="form-control"
-                                                                   name="final_balance"
-                                                                   step="0.01"
-                                                                   min="0"
-                                                                   value="{{ $register->current_balance }}"
-                                                                   required>
-                                                            <small class="text-muted">Puede ajustar el saldo final si es necesario</small>
+                                                            <label for="final_amount" class="form-label">Monto Final <span class="text-danger">*</span></label>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">$</span>
+                                                                <input type="number" step="0.01" class="form-control @error('final_amount') is-invalid @enderror"
+                                                                       id="final_amount" name="final_amount" required min="0">
+                                                            </div>
+                                                            @error('final_amount')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
+
                                                         <div class="mb-3">
-                                                            <label class="form-label">Notas</label>
-                                                            <textarea class="form-control"
-                                                                      name="notes"
-                                                                      rows="3"
-                                                                      placeholder="Ingrese cualquier observación sobre el cierre de caja"></textarea>
+                                                            <label for="notes" class="form-label">Notas</label>
+                                                            <textarea class="form-control @error('notes') is-invalid @enderror"
+                                                                      id="notes" name="notes" rows="3">{{ old('notes') }}</textarea>
+                                                            @error('notes')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                                        <button type="submit" class="btn btn-warning">Confirmar Cierre</button>
+                                                        <button type="submit" class="btn btn-warning">Cerrar Caja</button>
                                                     </div>
                                                 </form>
                                             </div>

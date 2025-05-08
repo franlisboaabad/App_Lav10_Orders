@@ -26,7 +26,7 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('customers.index') }}">Lista de Clientes</a>
                     </li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('profile.edit') }}"> Mi Perfil </a></li>
+
                 </ul>
             </div>
         </li>

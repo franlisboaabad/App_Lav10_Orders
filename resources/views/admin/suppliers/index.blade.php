@@ -1,25 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="row">
-    <div class="col-12 grid-margin stretch-card">
-        <div class="card corona-gradient-card">
-            <div class="card-body py-0 px-0 px-sm-3">
-                <div class="row align-items-center">
-                    <div class="col-4 col-sm-3 col-xl-2">
-                        <img src="{{ asset('assets/images/dashboard/Group126@2x.png') }}" class="gradient-corona-img img-fluid" alt="">
-                    </div>
-                    <div class="col-3 col-sm-2 col-xl-2 ps-0 text-center">
-                        <span>
-                            <h6 class="mb-1 mb-sm-0">Gestión de Proveedores</h6>
-                            <p class="mb-0 font-weight-normal d-none d-sm-block">Lista de proveedores registrados</p>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+<div class="content-wrapper">
 
 <div class="row">
     <div class="col-12 grid-margin">
@@ -74,7 +57,7 @@
                                     <td>{{ $supplier->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <a href="{{ route('suppliers.edit', $supplier) }}" class="btn btn-primary btn-sm">
-                                            <i class="icon-eye"></i>
+                                            <i class="ti-pencil"></i>
                                         </a>
                                         <form action="{{ route('suppliers.destroy', $supplier) }}" method="POST" class="d-inline">
                                             @csrf
