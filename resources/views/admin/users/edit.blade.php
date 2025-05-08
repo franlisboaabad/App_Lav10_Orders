@@ -7,6 +7,7 @@
         <div class="col-6 grid-margin">
             <div class="card">
                 <div class="card-body">
+                    <h4 class="card-title">Editar Usuario</h4>
                     <form class="forms-sample" method="POST" action="{{ route('users.update', $user) }}">
                         @csrf
                         @method('PUT')

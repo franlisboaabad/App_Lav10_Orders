@@ -9,17 +9,8 @@
         <div class="col-12 grid-margin">
         <div class="card">
             <div class="card-body">
-                @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
 
-                @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
+                @include('partials._validations')
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h4 class="card-title">Marcas</h4>
@@ -29,7 +20,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-bordered table-striped" id="table-brands">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -54,7 +45,7 @@
                                     <td>{{ $brand->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <a href="{{ route('brands.edit', $brand) }}" class="btn btn-primary btn-sm">
-                                            <i class="icon-eye"></i>
+                                            <i class="ti-pencil"></i>
                                         </a>
                                         <form action="{{ route('brands.destroy', $brand) }}" method="POST" class="d-inline">
                                             @csrf
@@ -73,12 +64,16 @@
                         </tbody>
                     </table>
                 </div>
-
-                <div class="mt-4">
-                    {{ $brands->links() }}
-                </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function() {
+        $('#table-brands').DataTable();
+    });
+</script>
 @endsection

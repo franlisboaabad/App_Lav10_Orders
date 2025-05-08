@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -57,7 +57,7 @@
                                     <td>{{ $customer->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         <a href="{{ route('customers.edit', $customer) }}" class="btn btn-primary btn-sm">
-                                            <i class="icon-eye"></i>
+                                            <i class="ti-pencil"></i>
                                         </a>
                                         <form action="{{ route('customers.destroy', $customer) }}" method="POST" class="d-inline">
                                             @csrf

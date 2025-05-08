@@ -6,12 +6,7 @@
                 <span class="menu-title">Dashboard</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('companies.index') }}">
-                <i class="ti-briefcase menu-icon"></i>
-                <span class="menu-title">Empresa</span>
-            </a>
-        </li>
+
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
                 <i class="icon-head menu-icon"></i>
@@ -126,8 +121,12 @@
             <div class="collapse" id="config-nav">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item">
+                        <a class="nav-link" href="{{ route('companies.index') }}">
+                            <span>Empresa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('service-order-statuses.index') }}">
-                            <i class="fas fa-tasks"></i>
                             <span>Estados de Órdenes</span>
                         </a>
                     </li>

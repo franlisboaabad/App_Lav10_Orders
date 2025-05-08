@@ -7,7 +7,9 @@
     <div class="row">
         <div class="col-6 grid-margin">
             <div class="card">
+
                 <div class="card-body">
+                    <h4 class="card-title">Nuevo Usuario</h4>
                     <form class="forms-sample" method="POST" action="{{ route('users.store') }}">
                         @csrf
 

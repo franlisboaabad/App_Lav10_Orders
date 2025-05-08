@@ -21,6 +21,10 @@
   <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/style.css') }}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css" />
+
 </head>
 <body>
   <div class="container-scroller">
@@ -45,17 +49,15 @@
   <script src="{{ asset('assets/vendors/chart.js/Chart.min.js') }}"></script>
   <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
   <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
-  <!--<script src="{{ asset('assets/js/misc.js') }}"></script>-->
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/todolist.js') }}"></script>
   <script src="{{ asset('assets/js/template.js') }}"></script>
   <script src="{{ asset('assets/js/settings.js') }}"></script>
+  <!--jquery-->
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <!-- DataTables -->
-  <script src="{{ asset('assets/vendors/datatables.net/jquery.dataTables.js') }}"></script>
-  <script src="{{ asset('assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js') }}"></script>
-  <script src="{{ asset('assets/js/dataTables.select.min.js') }}"></script>
-
+  <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
   @stack('scripts')
 </body>
 
