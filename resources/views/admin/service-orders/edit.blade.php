@@ -181,6 +181,61 @@
                             @enderror
                         </div>
 
+                        <div class="mb-3">
+                            <h5>Productos Utilizados</h5>
+                            <div id="products-container">
+                                @foreach($serviceOrder->products as $index => $product)
+                                    <div class="row product-row mb-2">
+                                        <div class="col-md-4">
+                                            <select class="form-select product-select form-control"
+                                                    name="products[{{ $index }}][product_id]"
+                                                    required>
+                                                <option value="">Seleccione un producto</option>
+                                                @foreach($products as $p)
+                                                    <option value="{{ $p->id }}"
+                                                        data-price="{{ $p->price }}"
+                                                        data-stock="{{ $p->stock }}"
+                                                        {{ $product->id == $p->id ? 'selected' : '' }}>
+                                                        {{ $p->name }} (Stock: {{ $p->stock }})
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="number" class="form-control quantity-input"
+                                                   name="products[{{ $index }}][quantity]"
+                                                   placeholder="Cantidad"
+                                                   min="1"
+                                                   value="{{ $product->pivot->quantity }}"
+                                                   required>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="number" class="form-control price-input"
+                                                   name="products[{{ $index }}][unit_price]"
+                                                   placeholder="Precio"
+                                                   step="0.01"
+                                                   value="{{ $product->pivot->unit_price }}"
+                                                   required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control"
+                                                   name="products[{{ $index }}][notes]"
+                                                   placeholder="Notas"
+                                                   value="{{ $product->pivot->notes }}">
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button type="button" class="btn btn-danger remove-product">
+                                                <i class="ti-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <button type="button" class="btn btn-success mt-2" id="add-product">
+                                <i class="ti-plus"></i> Agregar Producto
+                            </button>
+                        </div>
+
                         <div class="text-end">
                             <a href="{{ route('service-orders.index') }}" class="btn btn-secondary me-1">Cancelar</a>
                             <button type="submit" class="btn btn-primary">Actualizar Orden de Servicio</button>
@@ -191,4 +246,89 @@
         </div>
     </div>
 </div>
+
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    let productCount = {{ $serviceOrder->products->count() }};
+
+    // Agregar nuevo producto
+    $('#add-product').click(function() {
+        const template = `
+            <div class="row product-row mb-2">
+                <div class="col-md-4">
+                    <select class="form-select product-select form-control" name="products[${productCount}][product_id]" required>
+                        <option value="">Seleccione un producto</option>
+                        @foreach($products as $product)
+                            <option value="{{ $product->id }}"
+                                data-price="{{ $product->price }}"
+                                data-stock="{{ $product->stock }}">
+                                {{ $product->name }} (Stock: {{ $product->stock }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" class="form-control quantity-input"
+                           name="products[${productCount}][quantity]"
+                           placeholder="Cantidad"
+                           min="1"
+                           required>
+                </div>
+                <div class="col-md-2">
+                    <input type="number" class="form-control price-input"
+                           name="products[${productCount}][unit_price]"
+                           placeholder="Precio"
+                           step="0.01"
+                           required>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control"
+                           name="products[${productCount}][notes]"
+                           placeholder="Notas">
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger remove-product">
+                        <i class="ti-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        $('#products-container').append(template);
+        productCount++;
+    });
+
+    // Eliminar producto
+    $(document).on('click', '.remove-product', function() {
+        $(this).closest('.product-row').remove();
+    });
+
+    // Actualizar precio al seleccionar producto
+    $(document).on('change', '.product-select', function() {
+        const row = $(this).closest('.product-row');
+        const selectedOption = $(this).find('option:selected');
+        const price = selectedOption.data('price');
+        const stock = selectedOption.data('stock');
+
+        row.find('.price-input').val(price);
+        row.find('.quantity-input').attr('max', stock);
+    });
+
+    // Validar cantidad contra stock
+    $(document).on('change', '.quantity-input', function() {
+        const row = $(this).closest('.product-row');
+        const select = row.find('.product-select');
+        const selectedOption = select.find('option:selected');
+        const stock = selectedOption.data('stock');
+        const quantity = parseInt($(this).val());
+
+        if (quantity > stock) {
+            alert('La cantidad no puede ser mayor al stock disponible');
+            $(this).val(stock);
+        }
+    });
+});
+</script>
+@endpush

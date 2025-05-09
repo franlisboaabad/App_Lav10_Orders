@@ -15,6 +15,7 @@ use App\Models\ServiceOrderStatus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 
 class ServiceOrderController extends Controller
 {
@@ -36,13 +37,15 @@ class ServiceOrderController extends Controller
         $deviceModels = DeviceModel::active()->get();
         $statuses = ServiceOrderStatus::all();
         $specialists = Specialist::active()->get();
+        $products = Product::active()->get();
 
         return view('admin.service-orders.create', compact(
             'customers',
             'deviceTypes',
             'deviceModels',
             'statuses',
-            'specialists'
+            'specialists',
+            'products'
         ));
     }
 
@@ -63,7 +66,12 @@ class ServiceOrderController extends Controller
             'estimated_delivery_date' => 'nullable|date',
             'delivery_date' => 'nullable|date',
             'notes' => 'nullable|string',
-            'specialist_id' => 'nullable|exists:specialists,id'
+            'specialist_id' => 'nullable|exists:specialists,id',
+            'products' => 'nullable|array',
+            'products.*.product_id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.unit_price' => 'required|numeric|min:0',
+            'products.*.notes' => 'nullable|string'
         ]);
 
         try {
@@ -86,6 +94,19 @@ class ServiceOrderController extends Controller
                 'specialist_id' => $request->specialist_id,
                 'user_id' => auth()->id()
             ]);
+
+            // Guardar productos si existen
+            if ($request->has('products')) {
+                foreach ($request->products as $product) {
+                    $subtotal = $product['quantity'] * $product['unit_price'];
+                    $serviceOrder->products()->attach($product['product_id'], [
+                        'quantity' => $product['quantity'],
+                        'unit_price' => $product['unit_price'],
+                        'subtotal' => $subtotal,
+                        'notes' => $product['notes'] ?? null
+                    ]);
+                }
+            }
 
             DB::commit();
 
@@ -112,6 +133,7 @@ class ServiceOrderController extends Controller
         $deviceModels = DeviceModel::active()->get();
         $statuses = ServiceOrderStatus::all();
         $specialists = Specialist::active()->get();
+        $products = Product::active()->get();
 
         return view('admin.service-orders.edit', compact(
             'serviceOrder',
@@ -119,7 +141,8 @@ class ServiceOrderController extends Controller
             'deviceTypes',
             'deviceModels',
             'statuses',
-            'specialists'
+            'specialists',
+            'products'
         ));
     }
 
@@ -139,22 +162,16 @@ class ServiceOrderController extends Controller
             'estimated_delivery_date' => 'nullable|date',
             'delivery_date' => 'nullable|date',
             'notes' => 'nullable|string',
-            'specialist_id' => 'nullable|exists:specialists,id'
+            'specialist_id' => 'nullable|exists:specialists,id',
+            'products' => 'nullable|array',
+            'products.*.product_id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.unit_price' => 'required|numeric|min:0',
+            'products.*.notes' => 'nullable|string'
         ]);
 
         try {
             DB::beginTransaction();
-            //si la orden de servicio esta en estado 6, se deberia crear un movimiento de caja
-            $cashRegister = CashRegister::open()->first();
-            if ($request->status_id == ServiceOrderStatus::ENTREGADO) {
-                // Verificar que haya caja abierta antes de actualizar la orden
-                if (!$cashRegister) {
-                    Log::info('No hay caja abierta');
-                    return redirect()
-                        ->route('service-orders.show', $serviceOrder)
-                        ->with('error', 'No hay caja abierta, para finalizar la orden de servicio');
-                }
-            }
 
             $serviceOrder->update([
                 'customer_id' => $request->customer_id,
@@ -172,22 +189,18 @@ class ServiceOrderController extends Controller
                 'specialist_id' => $request->specialist_id
             ]);
 
-            // Si el estado es 6 (pagado), registrar el movimiento de caja
-            if ($request->status_id == ServiceOrderStatus::ENTREGADO) {
-                $cashMovement = CashMovement::create([
-                    'cash_register_id' => $cashRegister->id,
-                    'user_id' => auth()->id(),
-                    'type' => CashMovement::INGRESO,
-                    'amount' => $request->final_cost, // Mejor usar el request aquí
-                    'description' => 'Pago de orden de servicio',
-                    'date' => now(),
-                    'reference' => $serviceOrder->order_number,
-                    'payment_method' => CashMovement::EFECTIVO,
-                    'notes' => 'Pago de orden de servicio',
-                    'is_active' => true
-                ]);
-
-                Log::info($cashMovement);
+            // Actualizar productos
+            $serviceOrder->products()->detach();
+            if ($request->has('products')) {
+                foreach ($request->products as $product) {
+                    $subtotal = $product['quantity'] * $product['unit_price'];
+                    $serviceOrder->products()->attach($product['product_id'], [
+                        'quantity' => $product['quantity'],
+                        'unit_price' => $product['unit_price'],
+                        'subtotal' => $subtotal,
+                        'notes' => $product['notes'] ?? null
+                    ]);
+                }
             }
 
             DB::commit();

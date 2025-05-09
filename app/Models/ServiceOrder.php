@@ -65,6 +65,13 @@ class ServiceOrder extends Model
         return $this->belongsTo(Specialist::class);
     }
 
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'service_order_product')
+            ->withPivot('quantity', 'unit_price', 'subtotal', 'notes')
+            ->withTimestamps();
+    }
+
     public function getStatusColorAttribute()
     {
         return match($this->status->slug) {

@@ -122,6 +122,45 @@
                             </div>
                         @endif
 
+                        @if ($serviceOrder->products->count() > 0)
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <h5 class="card-title">Productos Utilizados</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Producto</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Precio Unitario</th>
+                                                    <th>Subtotal</th>
+                                                    <th>Notas</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($serviceOrder->products as $product)
+                                                    <tr>
+                                                        <td>{{ $product->name }}</td>
+                                                        <td>{{ $product->pivot->quantity }}</td>
+                                                        <td>${{ number_format($product->pivot->unit_price, 2) }}</td>
+                                                        <td>${{ number_format($product->pivot->subtotal, 2) }}</td>
+                                                        <td>{{ $product->pivot->notes }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="3" class="text-end">Total Productos:</th>
+                                                    <th>${{ number_format($serviceOrder->products->sum('pivot.subtotal'), 2) }}</th>
+                                                    <td></td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
