@@ -15,7 +15,7 @@
                                 <table class="table table-bordered">
                                     <tr>
                                         <th style="width: 200px;">Código</th>
-                                        <td>{{ $serviceOrder->code }}</td>
+                                        <td>{{ $serviceOrder->order_number }}</td>
                                     </tr>
                                     <tr>
                                         <th>Estado</th>
@@ -114,6 +114,26 @@
                         </div>
                     </div>
                     @endif
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Especialista Asignado</label>
+                                <p class="form-control-static">
+                                    @if($serviceOrder->specialist)
+                                        {{ $serviceOrder->specialist->name }}
+                                        @if($serviceOrder->specialist->specialties)
+                                            <small class="text-muted">
+                                                ({{ implode(', ', $serviceOrder->specialist->specialties) }})
+                                            </small>
+                                        @endif
+                                    @else
+                                        <span class="text-muted">No asignado</span>
+                                    @endif
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row mt-3">
                         <div class="col-12">

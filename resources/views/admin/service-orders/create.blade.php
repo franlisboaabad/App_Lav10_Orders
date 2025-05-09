@@ -81,6 +81,26 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
+                                    <label for="specialist_id" class="form-label">Especialista Asignado</label>
+                                    <select class="form-select @error('specialist_id') is-invalid @enderror form-control" id="specialist_id" name="specialist_id">
+                                        <option value="">Seleccione un especialista</option>
+                                        @foreach($specialists as $specialist)
+                                            <option value="{{ $specialist->id }}" {{ old('specialist_id') == $specialist->id ? 'selected' : '' }}>
+                                                {{ $specialist->name }}
+                                                @if($specialist->specialties)
+                                                    ({{ implode(', ', $specialist->specialties) }})
+                                                @endif
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('specialist_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
                                     <label for="estimated_cost" class="form-label">Costo Estimado <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text">$</span>
@@ -91,7 +111,9 @@
                                     @enderror
                                 </div>
                             </div>
+                        </div>
 
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="estimated_delivery_date" class="form-label">Fecha Estimada de Entrega</label>

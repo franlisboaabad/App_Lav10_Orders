@@ -15,11 +15,12 @@
             </a>
             <div class="collapse" id="auth">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('users.index') }}"> Lista de Usuarios </a>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('users.index') }}"> Usuarios </a>
                     </li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('users.create') }}"> Crear Usuario </a>
+
+                    <li class="nav-item"><a class="nav-link" href="{{ route('customers.index') }}">Clientes</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('customers.index') }}">Lista de Clientes</a>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.specialists.index') }}">Especialistas</a>
                     </li>
 
                 </ul>

@@ -24,7 +24,8 @@ class ServiceOrder extends Model
         'estimated_delivery_date',
         'delivery_date',
         'notes',
-        'user_id'
+        'user_id',
+        'specialist_id'
     ];
 
     protected $casts = [
@@ -33,6 +34,9 @@ class ServiceOrder extends Model
         'estimated_delivery_date' => 'date',
         'delivery_date' => 'date',
         'is_active' => 'boolean',
+        'scheduled_date' => 'datetime',
+        'completion_date' => 'datetime',
+        'total_amount' => 'decimal:2'
     ];
 
     // Relaciones
@@ -54,6 +58,11 @@ class ServiceOrder extends Model
     public function status()
     {
         return $this->belongsTo(ServiceOrderStatus::class, 'status_id');
+    }
+
+    public function specialist()
+    {
+        return $this->belongsTo(Specialist::class);
     }
 
     public function getStatusColorAttribute()
@@ -123,5 +132,12 @@ class ServiceOrder extends Model
         return $query->whereHas('status', function($q) {
             $q->where('slug', 'cancelado');
         });
+    }
+
+    public static function generateOrderNumber()
+    {
+        $lastOrder = self::latest()->first();
+        $lastNumber = $lastOrder ? (int)substr($lastOrder->order_number, -4) : 0;
+        return 'ORD-' . str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
     }
 }

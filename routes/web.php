@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\CashRegisterController;
 use App\Http\Controllers\Admin\CashMovementController;
 use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\ServiceOrderStatusController;
+use App\Http\Controllers\Admin\SpecialistController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -76,6 +77,9 @@ Route::middleware('auth')->group(function () {
 
         // Rutas de ventas
         Route::resource('sales', SaleController::class);
+
+        // Rutas para especialistas
+        Route::resource('specialists', SpecialistController::class);
     });
 });
 

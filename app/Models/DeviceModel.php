@@ -32,4 +32,9 @@ class DeviceModel extends Model
     {
         return $this->belongsTo(DeviceType::class);
     }
+
+    public function scopeActive()
+    {
+        return $this->where('is_active', true);
+    }
 }

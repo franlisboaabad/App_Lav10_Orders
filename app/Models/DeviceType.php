@@ -25,4 +25,9 @@ class DeviceType extends Model
     {
         return $this->hasMany(DeviceModel::class);
     }
+
+    public function scopeActive()
+    {
+        return $this->where('is_active', true);
+    }
 }

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Customer;
+use App\Models\DeviceType;
+use App\Models\Specialist;
 use App\Models\DeviceModel;
 use Illuminate\Support\Str;
 use App\Models\ServiceOrder;
 use Illuminate\Http\Request;
 use App\Models\ServiceOrderStatus;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 
 class ServiceOrderController extends Controller
@@ -24,66 +27,71 @@ class ServiceOrderController extends Controller
 
     public function create()
     {
-        $customers = Customer::orderBy('name')->get();
-        $deviceModels = DeviceModel::with('brand')->orderBy('name')->get();
-        $statuses = ServiceOrderStatus::where('is_active', true)->orderBy('name')->get();
+        $customers = Customer::active()->get();
+        $deviceTypes = DeviceType::active()->get();
+        $deviceModels = DeviceModel::active()->get();
+        $statuses = ServiceOrderStatus::all();
+        $specialists = Specialist::active()->get();
 
-        return view('admin.service-orders.create', compact('customers', 'deviceModels', 'statuses'));
+        return view('admin.service-orders.create', compact(
+            'customers',
+            'deviceTypes',
+            'deviceModels',
+            'statuses',
+            'specialists'
+        ));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        Log::info($request->all());
+
+        $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'device_model_id' => 'required|exists:device_models,id',
-            'serial_number' => 'nullable|string|max:100',
+            'serial_number' => 'required|string',
             'status_id' => 'required|exists:service_order_statuses,id',
             'problem_description' => 'required|string',
             'diagnosis' => 'nullable|string',
             'solution' => 'nullable|string',
-            'estimated_cost' => 'required|numeric|min:0',
+            'estimated_cost' => 'nullable|numeric|min:0',
             'final_cost' => 'nullable|numeric|min:0',
             'estimated_delivery_date' => 'nullable|date',
             'delivery_date' => 'nullable|date',
             'notes' => 'nullable|string',
+            'specialist_id' => 'nullable|exists:specialists,id'
         ]);
 
         try {
             DB::beginTransaction();
 
-            // Generar el número de orden
-            $lastOrder = ServiceOrder::latest()->first();
-            $orderNumber = $lastOrder ? $lastOrder->id + 1 : 1;
-            $orderNumber = str_pad($orderNumber, 6, '0', STR_PAD_LEFT);
-
-            // Crear la orden con los datos validados y el número de orden
             $serviceOrder = ServiceOrder::create([
-                'order_number' => $orderNumber,
-                'customer_id' => $validated['customer_id'],
-                'device_model_id' => $validated['device_model_id'],
-                'serial_number' => $validated['serial_number'],
-                'status_id' => $validated['status_id'],
-                'problem_description' => $validated['problem_description'],
-                'diagnosis' => $validated['diagnosis'],
-                'solution' => $validated['solution'],
-                'estimated_cost' => $validated['estimated_cost'],
-                'final_cost' => $validated['final_cost'] ?? null,
-                'estimated_delivery_date' => $validated['estimated_delivery_date'],
-                'delivery_date' => $validated['delivery_date'] ?? null,
-                'notes' => $validated['notes'],
-                'user_id' => auth()->id(), // Asignar el usuario actual
+                'order_number' => ServiceOrder::generateOrderNumber(),
+                'customer_id' => $request->customer_id,
+                'device_model_id' => $request->device_model_id,
+                'serial_number' => $request->serial_number,
+                'status_id' => $request->status_id,
+                'problem_description' => $request->problem_description,
+                'diagnosis' => $request->diagnosis,
+                'solution' => $request->solution,
+                'estimated_cost' => $request->estimated_cost,
+                'final_cost' => $request->final_cost,
+                'estimated_delivery_date' => $request->estimated_delivery_date,
+                'delivery_date' => $request->delivery_date,
+                'notes' => $request->notes,
+                'specialist_id' => $request->specialist_id,
+                'user_id' => auth()->id()
             ]);
 
             DB::commit();
 
             return redirect()
-                ->route('service-orders.show', $serviceOrder)
+                ->route('admin.service-orders.show', $serviceOrder)
                 ->with('success', 'Orden de servicio creada exitosamente.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()
-                ->withInput()
-                ->with('error', 'Error al crear la orden de servicio: ' . $e->getMessage());
+            Log::error('Error al crear orden de servicio: ' . $e->getMessage());
+            return back()->with('error', 'Error al crear la orden de servicio: ' . $e->getMessage());
         }
     }
 
@@ -95,34 +103,59 @@ class ServiceOrderController extends Controller
 
     public function edit(ServiceOrder $serviceOrder)
     {
-        $customers = Customer::orderBy('name')->get();
-        $deviceModels = DeviceModel::with('brand')->orderBy('name')->get();
-        $statuses = ServiceOrderStatus::where('is_active', true)->orderBy('name')->get();
+        $customers = Customer::active()->get();
+        $deviceTypes = DeviceType::active()->get();
+        $deviceModels = DeviceModel::active()->get();
+        $statuses = ServiceOrderStatus::all();
+        $specialists = Specialist::active()->get();
 
-        return view('admin.service-orders.edit', compact('serviceOrder', 'customers', 'deviceModels', 'statuses'));
+        return view('admin.service-orders.edit', compact(
+            'serviceOrder',
+            'customers',
+            'deviceTypes',
+            'deviceModels',
+            'statuses',
+            'specialists'
+        ));
     }
 
     public function update(Request $request, ServiceOrder $serviceOrder)
     {
-        $validated = $request->validate([
+        Log::info($request->all());
+        $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'device_model_id' => 'required|exists:device_models,id',
-            'serial_number' => 'nullable|string|max:100',
+            'serial_number' => 'required|string',
             'status_id' => 'required|exists:service_order_statuses,id',
             'problem_description' => 'required|string',
             'diagnosis' => 'nullable|string',
             'solution' => 'nullable|string',
-            'estimated_cost' => 'required|numeric|min:0',
+            'estimated_cost' => 'nullable|numeric|min:0',
             'final_cost' => 'nullable|numeric|min:0',
             'estimated_delivery_date' => 'nullable|date',
             'delivery_date' => 'nullable|date',
             'notes' => 'nullable|string',
+            'specialist_id' => 'nullable|exists:specialists,id'
         ]);
 
         try {
             DB::beginTransaction();
 
-            $serviceOrder->update($validated);
+            $serviceOrder->update([
+                'customer_id' => $request->customer_id,
+                'device_model_id' => $request->device_model_id,
+                'serial_number' => $request->serial_number,
+                'status_id' => $request->status_id,
+                'problem_description' => $request->problem_description,
+                'diagnosis' => $request->diagnosis,
+                'solution' => $request->solution,
+                'estimated_cost' => $request->estimated_cost,
+                'final_cost' => $request->final_cost,
+                'estimated_delivery_date' => $request->estimated_delivery_date,
+                'delivery_date' => $request->delivery_date,
+                'notes' => $request->notes,
+                'specialist_id' => $request->specialist_id
+            ]);
 
             DB::commit();
 
@@ -131,9 +164,8 @@ class ServiceOrderController extends Controller
                 ->with('success', 'Orden de servicio actualizada exitosamente.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return back()
-                ->withInput()
-                ->with('error', 'Error al actualizar la orden de servicio: ' . $e->getMessage());
+            Log::error('Error al actualizar orden de servicio: ' . $e->getMessage());
+            return back()->with('error', 'Error al actualizar la orden de servicio: ' . $e->getMessage());
         }
     }
 

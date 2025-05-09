@@ -23,4 +23,9 @@ class Customer extends Model
     protected $casts = [
         'is_active' => 'boolean',
     ];
+
+    public function scopeActive()
+    {
+        return $this->where('is_active', true);
+    }
 }
