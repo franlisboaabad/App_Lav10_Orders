@@ -103,6 +103,7 @@
                                     <thead>
                                         <tr>
                                             <th>Fecha</th>
+                                            <th>Referencia</th>
                                             <th>Tipo</th>
                                             <th>Descripción</th>
                                             <th>Monto</th>
@@ -114,6 +115,7 @@
                                         @forelse($cashRegister->movements as $movement)
                                         <tr>
                                             <td>{{ $movement->created_at->format('d/m/Y H:i') }}</td>
+                                            <td>{{ $movement->reference }}</td>
                                             <td>
                                                 <span class="badge bg-{{ $movement->type === 'INCOME' ? 'success' : 'danger' }}">
                                                     {{ $movement->type === 'INCOME' ? 'Ingreso' : 'Egreso' }}
