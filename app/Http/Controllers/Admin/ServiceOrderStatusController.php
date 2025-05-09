@@ -34,7 +34,7 @@ class ServiceOrderStatusController extends Controller
 
         ServiceOrderStatus::create($validated);
 
-        return redirect()->route('admin.service-order-statuses.index')
+        return redirect()->route('service-order-statuses.index')
             ->with('success', 'Estado creado exitosamente.');
     }
 
@@ -62,20 +62,20 @@ class ServiceOrderStatusController extends Controller
 
         $serviceOrderStatus->update($validated);
 
-        return redirect()->route('admin.service-order-statuses.index')
+        return redirect()->route('service-order-statuses.index')
             ->with('success', 'Estado actualizado exitosamente.');
     }
 
     public function destroy(ServiceOrderStatus $serviceOrderStatus)
     {
         if ($serviceOrderStatus->serviceOrders()->exists()) {
-            return redirect()->route('admin.service-order-statuses.index')
+            return redirect()->route('service-order-statuses.index')
                 ->with('error', 'No se puede eliminar el estado porque tiene órdenes de servicio asociadas.');
         }
 
         $serviceOrderStatus->delete();
 
-        return redirect()->route('admin.service-order-statuses.index')
+        return redirect()->route('service-order-statuses.index')
             ->with('success', 'Estado eliminado exitosamente.');
     }
 }

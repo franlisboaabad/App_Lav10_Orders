@@ -18,6 +18,8 @@ class ServiceOrderStatus extends Model
         'is_active'
     ];
 
+    public const ENTREGADO = '6';
+
     protected $casts = [
         'is_active' => 'boolean',
     ];

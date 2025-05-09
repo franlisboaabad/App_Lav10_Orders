@@ -51,12 +51,14 @@
                     </div>
 
                     <div class="mb-3 form-check">
-                        <input type="checkbox"
-                               class="form-check-input @error('is_active') is-invalid @enderror"
-                               id="is_active"
-                               name="is_active"
-                               {{ old('is_active', $serviceOrderStatus->is_active) ? 'checked' : '' }}>
-                        <label class="form-check-label" for="is_active">Activo</label>
+                        <label class="form-check-label">
+                            <input type="checkbox"
+                                   class="form-check-input"
+                                   name="is_active"
+                                   value="1"
+                                   {{ old('is_active', true) ? 'checked' : '' }}>
+                            Activo
+                        </label>
                         @error('is_active')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

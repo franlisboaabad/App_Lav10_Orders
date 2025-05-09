@@ -7,6 +7,8 @@ use App\Models\DeviceType;
 use App\Models\Specialist;
 use App\Models\DeviceModel;
 use Illuminate\Support\Str;
+use App\Models\CashMovement;
+use App\Models\CashRegister;
 use App\Models\ServiceOrder;
 use Illuminate\Http\Request;
 use App\Models\ServiceOrderStatus;
@@ -86,7 +88,7 @@ class ServiceOrderController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('admin.service-orders.show', $serviceOrder)
+                ->route('service-orders.show', $serviceOrder)
                 ->with('success', 'Orden de servicio creada exitosamente.');
         } catch (\Exception $e) {
             DB::rollBack();
@@ -140,6 +142,17 @@ class ServiceOrderController extends Controller
 
         try {
             DB::beginTransaction();
+            //si la orden de servicio esta en estado 6, se deberia crear un movimiento de caja
+            $cashRegister = CashRegister::open()->first();
+            if ($request->status_id == ServiceOrderStatus::ENTREGADO) {
+                // Verificar que haya caja abierta antes de actualizar la orden
+                if (!$cashRegister) {
+                    Log::info('No hay caja abierta');
+                    return redirect()
+                        ->route('service-orders.show', $serviceOrder)
+                        ->with('error', 'No hay caja abierta, para finalizar la orden de servicio');
+                }
+            }
 
             $serviceOrder->update([
                 'customer_id' => $request->customer_id,
@@ -156,6 +169,24 @@ class ServiceOrderController extends Controller
                 'notes' => $request->notes,
                 'specialist_id' => $request->specialist_id
             ]);
+
+            // Si el estado es 6 (pagado), registrar el movimiento de caja
+            if ($request->status_id == ServiceOrderStatus::ENTREGADO) {
+                $cashMovement = CashMovement::create([
+                    'cash_register_id' => $cashRegister->id,
+                    'user_id' => auth()->id(),
+                    'type' => CashMovement::INGRESO,
+                    'amount' => $request->final_cost, // Mejor usar el request aquí
+                    'description' => 'Pago de orden de servicio',
+                    'date' => now(),
+                    'reference' => $serviceOrder->order_number,
+                    'payment_method' => CashMovement::EFECTIVO,
+                    'notes' => 'Pago de orden de servicio',
+                    'is_active' => true
+                ]);
+
+                Log::info($cashMovement);
+            }
 
             DB::commit();
 

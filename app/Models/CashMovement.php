@@ -22,6 +22,12 @@ class CashMovement extends Model
         'is_active'
     ];
 
+    public const INGRESO = 'INCOME';
+    public const GASTO = 'EXPENSE';
+    public const EFECTIVO = 'CASH';
+    public const TRANSFERENCIA = 'TRANSFERENCE';
+    public const TARJETA_CREDITO = 'CARD';
+
     protected $casts = [
         'amount' => 'decimal:2',
         'is_active' => 'boolean'
