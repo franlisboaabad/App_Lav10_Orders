@@ -24,7 +24,9 @@ class ServiceOrderController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('admin.service-orders.index', compact('serviceOrders'));
+        $statuses = ServiceOrderStatus::all();
+
+        return view('admin.service-orders.index', compact('serviceOrders', 'statuses'));
     }
 
     public function create()
@@ -199,6 +201,43 @@ class ServiceOrderController extends Controller
             return back()->with('error', 'Error al actualizar la orden de servicio: ' . $e->getMessage());
         }
     }
+
+    public function updateStatus(Request $request, ServiceOrder $serviceOrder)
+    {
+        $request->validate([
+            'status_id' => 'required|exists:service_order_statuses,id'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            if ($request->status_id == ServiceOrderStatus::ENTREGADO) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Para finalizar la orden de servicio, se debe registrar el pago',
+                ]);
+            }
+
+            $serviceOrder->update([
+                'status_id' => $request->status_id
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Estado actualizado exitosamente',
+                'status' => $serviceOrder->status
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al actualizar el estado: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
 
     public function destroy(ServiceOrder $serviceOrder)
     {

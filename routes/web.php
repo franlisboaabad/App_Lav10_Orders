@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
     // Rutas para las órdenes de servicio
     Route::resource('service-orders', ServiceOrderController::class);
     Route::resource('service-order-statuses', ServiceOrderStatusController::class);
+    Route::post('service-orders/{serviceOrder}/update-status', [ServiceOrderController::class, 'updateStatus'])->name('service-orders.update-status');
 
     // Rutas de Caja
     Route::prefix('admin')->name('admin.')->group(function () {
