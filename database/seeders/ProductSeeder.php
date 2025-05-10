@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
-use Illuminate\Database\Seeder;
+use App\Models\Inventory;
 use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
@@ -17,7 +18,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Smartphone de última generación',
                 'category_id' => 1,
                 'supplier_id' => 1,
-                'price' => 999.99,
                 'purchase_price' => 800.00,
                 'sale_price' => 999.99,
                 'stock' => 50,
@@ -30,7 +30,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Laptop para trabajo y entretenimiento',
                 'category_id' => 1,
                 'supplier_id' => 1,
-                'price' => 1499.99,
                 'purchase_price' => 1200.00,
                 'sale_price' => 1499.99,
                 'stock' => 30,
@@ -43,7 +42,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Auriculares inalámbricos con cancelación de ruido',
                 'category_id' => 1,
                 'supplier_id' => 1,
-                'price' => 199.99,
                 'purchase_price' => 150.00,
                 'sale_price' => 199.99,
                 'stock' => 100,
@@ -58,7 +56,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Camisa casual para hombre',
                 'category_id' => 2,
                 'supplier_id' => 2,
-                'price' => 49.99,
                 'purchase_price' => 35.00,
                 'sale_price' => 49.99,
                 'stock' => 200,
@@ -71,7 +68,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Pantalón jeans clásico',
                 'category_id' => 2,
                 'supplier_id' => 2,
-                'price' => 79.99,
                 'purchase_price' => 60.00,
                 'sale_price' => 79.99,
                 'stock' => 150,
@@ -86,7 +82,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Set de 5 ollas antiadherentes',
                 'category_id' => 3,
                 'supplier_id' => 3,
-                'price' => 299.99,
                 'purchase_price' => 250.00,
                 'sale_price' => 299.99,
                 'stock' => 40,
@@ -99,7 +94,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Lámpara LED de escritorio',
                 'category_id' => 3,
                 'supplier_id' => 3,
-                'price' => 39.99,
                 'purchase_price' => 30.00,
                 'sale_price' => 39.99,
                 'stock' => 80,
@@ -114,7 +108,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Bolsa de arroz 5kg',
                 'category_id' => 4,
                 'supplier_id' => 4,
-                'price' => 24.99,
                 'purchase_price' => 20.00,
                 'sale_price' => 24.99,
                 'stock' => 300,
@@ -127,7 +120,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Botella de aceite de oliva extra virgen 1L',
                 'category_id' => 4,
                 'supplier_id' => 4,
-                'price' => 19.99,
                 'purchase_price' => 15.00,
                 'sale_price' => 19.99,
                 'stock' => 200,
@@ -142,7 +134,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Pack de 6 botellas de agua mineral',
                 'category_id' => 5,
                 'supplier_id' => 5,
-                'price' => 4.99,
                 'purchase_price' => 3.50,
                 'sale_price' => 4.99,
                 'stock' => 500,
@@ -155,7 +146,6 @@ class ProductSeeder extends Seeder
                 'description' => 'Pack de 6 latas de refresco',
                 'category_id' => 5,
                 'supplier_id' => 5,
-                'price' => 5.99,
                 'purchase_price' => 4.50,
                 'sale_price' => 5.99,
                 'stock' => 400,
@@ -165,8 +155,19 @@ class ProductSeeder extends Seeder
             ]
         ];
 
-        foreach ($products as $product) {
-            Product::create($product);
+        foreach ($products as $productData) {
+            $product = Product::create($productData);
+
+            $product->inventory()->create([
+                'product_id' => $product->id,
+                'quantity' => $product->stock,
+                'min_stock' => 0,
+                'max_stock' => 0
+            ]);
+
         }
+
+
+
     }
 }

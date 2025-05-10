@@ -1,22 +1,23 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\Admin\SaleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\BrandController;
-use App\Http\Controllers\Admin\DeviceTypeController;
-use App\Http\Controllers\Admin\DeviceModelController;
-use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\ServiceOrderController;
-use App\Http\Controllers\Admin\CashRegisterController;
-use App\Http\Controllers\Admin\CashMovementController;
-use App\Http\Controllers\Admin\SaleController;
-use App\Http\Controllers\Admin\ServiceOrderStatusController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\DeviceTypeController;
 use App\Http\Controllers\Admin\SpecialistController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DeviceModelController;
+use App\Http\Controllers\Admin\CashMovementController;
+use App\Http\Controllers\Admin\CashRegisterController;
+use App\Http\Controllers\Admin\ServiceOrderController;
+use App\Http\Controllers\Admin\ServiceOrderStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('service-orders', ServiceOrderController::class);
     Route::resource('service-order-statuses', ServiceOrderStatusController::class);
     Route::post('service-orders/{serviceOrder}/update-status', [ServiceOrderController::class, 'updateStatus'])->name('service-orders.update-status');
+
+    // Rutas para el inventario
+    Route::resource('inventories', InventoryController::class);
 
     // Rutas de Caja
     Route::prefix('admin')->name('admin.')->group(function () {

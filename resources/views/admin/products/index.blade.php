@@ -83,9 +83,7 @@
                     </table>
                 </div>
 
-                <div class="mt-4">
-                    {{ $products->links() }}
-                </div>
+
             </div>
         </div>
     </div>

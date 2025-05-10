@@ -50,7 +50,7 @@ class ProductController extends Controller
             'notes' => ['nullable', 'string'],
         ]);
 
-        Product::create([
+        $product = Product::create([
             'name' => $request->name,
             'code' => $request->code,
             'slug' => Str::slug($request->name),
@@ -65,6 +65,13 @@ class ProductController extends Controller
             'unit' => $request->unit,
             'notes' => $request->notes,
             'is_active' => true,
+        ]);
+
+        $product->inventory()->create([
+            'product_id' => $product->id,
+            'quantity' => $product->stock,
+            'min_stock' => $product->minimum_stock,
+            'max_stock' => 0
         ]);
 
         return redirect()->route('products.index')
